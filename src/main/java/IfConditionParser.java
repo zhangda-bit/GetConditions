@@ -1,5 +1,6 @@
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.SwitchStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.ArrayList;
@@ -12,16 +13,19 @@ public class IfConditionParser extends VoidVisitorAdapter<Void> {
     public IfConditionParser() {
         conditions = new ArrayList<>();
     }
+    public IfConditionParser(List<Parameter> conditions) {
+        this.conditions = conditions;
+    }
 
     public List<Parameter> getConditions() {
         return conditions;
     }
 
     @Override
-    public void visit(IfStmt n, Void arg) {
-        Expression condition = n.getCondition();
+    public void visit(IfStmt ifStmt, Void arg) {
+        Expression condition = ifStmt.getCondition();
         process(condition);
-        super.visit(n, arg);
+        super.visit(ifStmt, arg);
     }
 
     public void process(Expression condition) {
