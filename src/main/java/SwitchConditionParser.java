@@ -1,3 +1,4 @@
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.*;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class SwitchConditionParser extends VoidVisitorAdapter<Void> {
     private List<Parameter> conditions;
+    private CompilationUnit cu;
 
     public SwitchConditionParser() {
         conditions = new ArrayList<>();
@@ -15,6 +17,11 @@ public class SwitchConditionParser extends VoidVisitorAdapter<Void> {
 
     public SwitchConditionParser(List<Parameter> conditions) {
         this.conditions = conditions;
+    }
+
+    public SwitchConditionParser(List<Parameter> conditions, CompilationUnit cu) {
+        this.conditions = conditions;
+        this.cu = cu;
     }
 
 

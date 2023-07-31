@@ -21,6 +21,10 @@ public class MethodDeclarationVisitor extends VoidVisitorAdapter<Void> {
         this.conditions = conditions;
     }
 
+    public List<Parameter> getConditions() {
+        return conditions;
+    }
+
     @Override
     public void visit(MethodDeclaration methodDeclaration, Void arg) {
         super.visit(methodDeclaration, arg);
