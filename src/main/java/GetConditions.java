@@ -7,7 +7,9 @@ import com.github.javaparser.ast.stmt.SwitchStmt;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class GetConditions {
     public static List<Parameter> getIfConditionsByParser(String filePath) {
@@ -101,6 +103,43 @@ public class GetConditions {
         return res;
     }
 
+    public static List<HashMap<String, String>> getAssertMessage(String filePath) {
+        CompilationUnit cu = null;
+        try {
+            //使用JavaParser解析java文件
+            cu = StaticJavaParser.parse(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<HashMap<String, String>> res = new ArrayList<>();
+        if (cu != null) {
+            // 创建方法声明收集器
+            List<MethodDeclaration> methodDeclarations = new ArrayList<>();
+
+            // 创建Visitor对象，并传入方法声明收集器
+            MethodDeclarationExtractor methodDeclarationExtractor = new MethodDeclarationExtractor();
+            methodDeclarationExtractor.visit(cu, methodDeclarations);
+
+            // 遍历收集到的方法声明
+            for (MethodDeclaration methodDeclaration : methodDeclarations) {
+                System.out.println(methodDeclaration.getNameAsString());
+
+                List<IfStmt> ifStmts = methodDeclaration.findAll(IfStmt.class);
+                for (IfStmt ifStmt : ifStmts) {
+                    GetAssertMessage getAssertMessage = new GetAssertMessage();
+                    getAssertMessage.visit(ifStmt, null);
+                    HashMap<String, String> assertMessage = getAssertMessage.getAssertMessage();
+                    Set<String> keySet = assertMessage.keySet();
+                    for (String key : keySet){
+                        System.out.println(key+ ": " + assertMessage.get(key));
+                    }
+                    res.add(assertMessage);
+                }
+            }
+        }
+        return res;
+    }
+
     public static List<Parameter> mergeParamList(List<Parameter> l1, List<Parameter> l2) {
         List<Parameter> l = new ArrayList<>(l2);
         for (Parameter p1 : l1) {
@@ -124,7 +163,9 @@ public class GetConditions {
                     }
                 }
             }
-            l.add(p1);
+            if (!hasParam) {
+                l.add(p1);
+            }
         }
         return l;
     }

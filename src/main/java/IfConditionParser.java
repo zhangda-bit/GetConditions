@@ -65,11 +65,11 @@ public class IfConditionParser extends VoidVisitorAdapter<Void> {
                 }
             }
 
-            // 内部函数
+            // 内部函数(包含着本java文件中)
             if (methodDeclaration != null) {
                 processInternalMethodExpr(methodDeclaration);
             }
-            //外部函数
+            // 外部函数
             else {
                 processExternalMethodExpr(condition);
             }
@@ -180,15 +180,22 @@ public class IfConditionParser extends VoidVisitorAdapter<Void> {
                 paramValue = scope.replaceAll("\"", "");
             }
             MethodCallExpr methodCallExpr = (MethodCallExpr) condition;
+
+            // 如果是null / empty 判断，默认为string类型，并赋初值
             if (methodCallExpr.getName().asString().contains("Null") || methodCallExpr.getName().asString().contains("Empty")){
                 paramValue = "";
             }
             Expression argumentExpr = methodCallExpr.getArgument(0);
+
+            // 获得参数名称
             if (argumentExpr.isNameExpr()) {
                 paramName = ((NameExpr) argumentExpr).getNameAsString();
-            } else if (argumentExpr.isMethodCallExpr()) {
+            }
+            // 处理函数中嵌套函数调用的情况
+            else if (argumentExpr.isMethodCallExpr()) {
                 MethodCallExpr subMethodCallExpr = (MethodCallExpr) argumentExpr;
-                paramName = subMethodCallExpr.getName().asString().substring(3).toLowerCase(Locale.ROOT);
+                paramName = subMethodCallExpr.getName().asString().substring(3);
+                paramName = paramName.substring(0, 1).toLowerCase(Locale.ROOT) + paramName.substring(1);
             }
             for (Parameter p : conditions) {
                 if (p != null && p.getName().equals(paramName)) {
@@ -222,8 +229,6 @@ public class IfConditionParser extends VoidVisitorAdapter<Void> {
                 }
                 list.add(paramValue);
             }
-
-
         }
     }
 }

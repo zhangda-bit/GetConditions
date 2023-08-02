@@ -1,3 +1,5 @@
+package test;
+
 public class toBeTestSwitch {
     public static void main(String[] args) {
         int num = 1;

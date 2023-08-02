@@ -3,22 +3,43 @@ import java.util.regex.Pattern;
 
 public class testJavaParser {
     public static void main(String[] args) {
-        /*// Java代码文件路径
-        String filePath = "./toBeTest.java";
-        // 解析Java代码文件
-        GetConditions.getIfConditionsByParser(filePath);
-        Parameter p = new Parameter("name", "String", new ArrayList<String>(){{this.add(""); this.add("zhangsan");}});
-        //System.out.println(p.toString());
-        // Java代码文件路径
-        String filePath = "./toBeTest.java";
+        /*
+        * 测试switch抽取
+        * */
+
+        /*
+        String filePath = "./test.toBeTest.java";
         // 解析Java代码文件
         GetConditions.getSwitchConditionsByParser(filePath);
+        */
+
+        /*
+        * 测试以方法为单位抽取switch+if抽取
+        * */
+
+        /*
+        String filePath = "./test.toBeTest.java";
+        GetConditions.getConditionsFromMethod(filePath);
+        */
+
+
+        /*
+        * 测试if抽取（包含内部函数调用）
+        * */
+        /*
         String filePath = "./toBeTest.java";
-        GetConditions.getConditionsFromMethod(filePath);*/
-        // Java代码文件路径
-        String filePath = "./toBeTest.java";
-        // 解析Java代码文件
         GetConditions.getIfConditionsByParser(filePath);
+        */
+
+        /*
+        * 测试errmsgs信息抽取能力
+        * */
+
+        /*
+        String filePath = "./test/toBeTestAssert.java";
+        GetConditions.getAssertMessage(filePath);
+         */
+
 
     }
 }

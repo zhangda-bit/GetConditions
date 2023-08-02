@@ -1,2 +1,16 @@
 # GetConditions
 提取java代码中if/switch语句，抽取参数和取值范围
+
+testJavaParser为测试类
+
+test文件夹为待测文件
+
+GetConditions为工具类，提供if/switch/if+switch(以方法为单位)/assertMessage的抽取功能
+
+ifConditionParser提供if条件抽取功能
+
+SwitchConditionParser提供switch条件抽取功能
+
+MethodDecalarationExtractor提供java文件方法提取功能
+
+GetAssertMessage提供assetMessage抽取功能
